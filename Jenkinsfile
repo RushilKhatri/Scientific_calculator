@@ -56,7 +56,16 @@ pipeline {
         // ── Stage 5: Docker Build ─────────────────────────────────────────────
         stage('Docker Build') {
             steps {
-                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                    )]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker build -t scientific-calculator:latest .
+                    '''
+                }
             }
         }
 
@@ -67,11 +76,10 @@ pipeline {
                     credentialsId: 'dockerhub-credentials',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
-                )]) {
+                    )]) {
                     sh '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker tag $IMAGE_NAME:$IMAGE_TAG $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
-                        docker push $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
+                        docker tag scientific-calculator:latest $DOCKER_USER/scientific-calculator:latest
+                        docker push $DOCKER_USER/scientific-calculator:latest
                         docker logout
                     '''
                 }
