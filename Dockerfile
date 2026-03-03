@@ -12,7 +12,7 @@ COPY src ./src
 RUN mvn package -DskipTests -B
 
 # ─── Stage 2: Run ─────────────────────────────────────────────────────────────
-FROM openjdk:11-jre-slim
+FROM eclipse-temurin:11-jre-jammy
 
 WORKDIR /app
 
