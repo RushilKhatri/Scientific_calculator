@@ -89,41 +89,39 @@ pipeline {
 
     // ── Post Actions: Email Notifications ─────────────────────────────────────
     post {
-        success {
-            emailext(
-                subject: "✅ BUILD SUCCESS: ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
-                body: """
-                    <p>The build completed <b>successfully</b>.</p>
-                    <ul>
-                        <li><b>Job:</b> ${env.JOB_NAME}</li>
-                        <li><b>Build #:</b> ${env.BUILD_NUMBER}</li>
-                        <li><b>Status:</b> SUCCESS</li>
-                        <li><b>Build URL:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></li>
-                    </ul>
-                """,
-                mimeType: 'text/html',
-                attachLog: true,
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
-                to: 'rushilkhatri1836@gmail.com'
-            )
-        }
-        failure {
-            emailext(
-                subject: "❌ BUILD FAILED: ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
-                body: """
-                    <p>The build has <b>failed</b>. Please check the console log attached below.</p>
-                    <ul>
-                        <li><b>Job:</b> ${env.JOB_NAME}</li>
-                        <li><b>Build #:</b> ${env.BUILD_NUMBER}</li>
-                        <li><b>Status:</b> FAILURE</li>
-                        <li><b>Build URL:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></li>
-                    </ul>
-                """,
-                mimeType: 'text/html',
-                attachLog: true,
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
-                to: 'rushilkhatri1836@gmail.com'
-            )
-        }
+    success {
+        emailext(
+            subject: "✅ BUILD SUCCESS: ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
+            body: """
+                <p>The build completed <b>successfully</b>.</p>
+                <ul>
+                    <li><b>Job:</b> ${env.JOB_NAME}</li>
+                    <li><b>Build #:</b> ${env.BUILD_NUMBER}</li>
+                    <li><b>Status:</b> SUCCESS</li>
+                    <li><b>Build URL:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></li>
+                </ul>
+            """,
+            mimeType: 'text/html',
+            attachLog: true,
+            to: 'rushilkhatri1836@gmail.com'
+        )
     }
+    failure {
+        emailext(
+            subject: "❌ BUILD FAILED: ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
+            body: """
+                <p>The build has <b>failed</b>. Please check the console log attached below.</p>
+                <ul>
+                    <li><b>Job:</b> ${env.JOB_NAME}</li>
+                    <li><b>Build #:</b> ${env.BUILD_NUMBER}</li>
+                    <li><b>Status:</b> FAILURE</li>
+                    <li><b>Build URL:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></li>
+                </ul>
+            """,
+            mimeType: 'text/html',
+            attachLog: true,
+            to: 'rushilkhatri1836@gmail.com'
+        )
+    }
+}
 }
