@@ -85,7 +85,6 @@ pipeline {
                 }
             }
         }
-
         // ── Stage 7: Ansible Deploy ───────────────────────────────────────────
         stage('Ansible Deploy') {
             steps {
@@ -95,7 +94,6 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                     )]) {
                     sh '''
-                        sudo apt-get install -y ansible 2>/dev/null || pip3 install ansible
                         ansible-playbook -i ansible/inventory.ini ansible/playbook.yml \
                             --extra-vars "dockerhub_user=$DOCKER_USER" \
                             -v
@@ -104,6 +102,7 @@ pipeline {
             }
         }
     }
+
     
     // ── Post Actions: Email Notifications ─────────────────────────────────────
     post {
