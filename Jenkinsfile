@@ -92,13 +92,14 @@ pipeline {
                     credentialsId: 'dockerhub-credentials',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
-                    )]) {
-                    sh '''
-                        ansible-playbook -i ansible/inventory.ini ansible/playbook.yml \
-                            --extra-vars "dockerhub_user=$DOCKER_USER" \
-                            -v
-                    '''
-                }
+                )]) {
+            sh '''
+                cd ansible
+                ansible-playbook -i inventory.ini playbook.yml \
+                    --extra-vars "dockerhub_user=$DOCKER_USER" \
+                    -v
+            '''
+                  }
             }
         }
     }
