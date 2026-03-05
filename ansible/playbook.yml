@@ -1,30 +1,16 @@
 ---
 - name: Deploy Scientific Calculator
   hosts: localhost
-  become: yes
-  become_method: sudo
-  become_user: root
+  become: no
 
   tasks:
-
-    - name: Install docker.io package
-      apt:
-        name: docker.io
-        state: present
-        update_cache: yes
-
-    - name: Ensure Docker service is started and enabled
-      service:
-        name: docker
-        state: started
-        enabled: yes
 
     - name: Pull the Docker image from Docker Hub
       community.docker.docker_image:
         name: "{{ dockerhub_user }}/scientific-calculator:latest"
         source: pull
 
-    - name: Stop and remove existing container (ignore errors if not found)
+    - name: Stop and remove existing container
       community.docker.docker_container:
         name: scientific-calculator
         state: absent
