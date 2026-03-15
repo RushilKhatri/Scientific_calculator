@@ -3,7 +3,7 @@ package com.calculator;
 /**
  * Scientific Calculator providing core mathematical operations.
  */
-public class Calculator {
+blic class Calculator {
 
     /**
      * Returns the square root of x.
